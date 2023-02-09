@@ -32,10 +32,9 @@ func BirthdayCalc(w http.ResponseWriter, r *http.Request) {
 	dateBirth := models.DateAge{
 		Date: r.FormValue("birthday"),
 	}
-
 	// Converte o input do usuário para Int pegando apenas o ano
 	fmt.Println(dateBirth)
-	yearInput, err := strconv.ParseInt(r.FormValue("birthday")[0:4], 10, 64)
+	yearInput, err := strconv.ParseInt(r.FormValue("birthday")[0:4], 10, 12)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -50,7 +49,6 @@ func BirthdayCalc(w http.ResponseWriter, r *http.Request) {
 	// Calcular a idade
 	CalcDate := YearNow - int(yearInput)
 	fmt.Println(CalcDate)
-
 	// carregar template
 	utils.ReadTemplate(w, "BirthDayCalc.html", dateBirth)
 
