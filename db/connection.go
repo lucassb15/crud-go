@@ -4,24 +4,40 @@ import (
 	"context"
 	"log"
 	"os"
-	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var uri = os.Getenv("MONGODB_URI")
+// Conexão com o banco
 
-func getConnection() (client *mongo.Client, ctx context.Context) {
+var MONGODB_URL = "MONGODB_URI"
+var ctx = context.TODO()
+var Collection *mongo.Collection
 
-	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
+func InitConnection() {
+	mongodb_uri := os.Getenv(MONGODB_URL)
+	clientOptions := options.Client().ApplyURI(mongodb_uri)
+	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
-	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
-	err = client.Connect(ctx)
+
+	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return
+	log.Printf("Connected Mongo")
+
+	// // Teste de insert
+	// coll := client.Database("Lucas").Collection("Test")
+	// newUser := models.User{
+	// 	Nome:  "Teste2",
+	// 	Email: "Teste@teste.com",
+	// }
+	// result, err := coll.InsertOne(context.TODO(), newUser)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Printf("Document inserted with ID: %s\n", result.InsertedID)
 }

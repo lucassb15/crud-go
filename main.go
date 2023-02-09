@@ -1,17 +1,22 @@
 package main
 
 import (
+	"fmt"
 	"log"
-	"modulo/handlers"
+	"modulo/db"
+	"modulo/router"
+	"modulo/utils"
 	"net/http"
 	"os"
 )
 
 func main() {
-
 	port := os.Getenv("PORT")
-	http.HandleFunc("/", handlers.UserHandler)
-	if err := http.ListenAndServe(port, nil); err != nil {
+	r := router.Gerar()
+	utils.CarregarTemplates() // carregar os templates ParseGlob *.views
+	db.InitConnection()       // Inicia o DB
+	fmt.Println("Servidor iniciado", port)
+	if err := http.ListenAndServe(port, r); err != nil {
 		log.Fatal(err)
 	}
 
