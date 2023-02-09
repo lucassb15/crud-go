@@ -34,6 +34,7 @@ func BirthdayCalc(w http.ResponseWriter, r *http.Request) {
 	}
 	// Converte o input do usuário para Int pegando apenas o ano
 	fmt.Println(dateBirth)
+	fmt.Println(len(dateBirth.Date)) // tamanho 
 	yearInput, err := strconv.ParseInt(r.FormValue("birthday")[0:4], 10, 12)
 	if err != nil {
 		fmt.Println(err)
