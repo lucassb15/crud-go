@@ -5,9 +5,11 @@ import (
 	"modulo/models"
 	"modulo/utils"
 	"net/http"
-	"strconv"
-	"time"
 )
+
+type PegaData struct {
+	DataD *models.DateAge
+}
 
 // Carrega a pagina localhost:8000
 func LoadIndex(w http.ResponseWriter, r *http.Request) {
@@ -22,35 +24,18 @@ func LoadIndexPost(w http.ResponseWriter, r *http.Request) {
 		Nome:  r.FormValue("nome"),
 		Email: r.FormValue("email"),
 	}
-
-	utils.ReadTemplate(w, "index.html", UserData)
-	fmt.Println(UserData)
-
-}
-
-func BirthdayCalc(w http.ResponseWriter, r *http.Request) {
 	dateBirth := models.DateAge{
 		Date: r.FormValue("birthday"),
 	}
-	// Converte o input do usuário para Int pegando apenas o ano
-	fmt.Println(dateBirth)
-	fmt.Println(len(dateBirth.Date)) // tamanho
-	yearInput, err := strconv.ParseInt(r.FormValue("birthday")[0:4], 10, 12)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(yearInput)
+	utils.ReadTemplate(w, "index.html", UserData)
+	fmt.Println(UserData, dateBirth)
 
-	// Pega a data atual e retira apenas o Ano
-	CurrentTime := time.Now()
-	CurrentTime.Year()
-	YearNow := CurrentTime.Year()
-	fmt.Println(YearNow)
-
-	// Calcular a idade
-	CalcDate := YearNow - int(yearInput)
-	fmt.Println(CalcDate)
-	// carregar template
-	utils.ReadTemplate(w, "BirthDayCalc.html", dateBirth)
-
+}
+func BirthdayCalc(w http.ResponseWriter, r *http.Request) {
+	utils.ReadTemplate(w, "BirthDayCalc.html", nil)
+}
+func (me *PegaData) Teste(numero int32) int32 {
+	cavalo := 10
+	fmt.Println(cavalo)
+	return numero
 }
